@@ -79,5 +79,75 @@ namespace OrderManagementAPITests
             // Assert
             Assert.IsInstanceOf<OkResult>(result);
         }
+
+        [Fact]
+        public void InvalidOrderModel_ReturnsBadRequest()
+        {
+        // Arrange
+        var order = new Order { Id = 0, FirstName = null, LastName = null };
+        var controller = new OrdersController(new OrderRepository());
+
+        // Act
+        var result = controller.AddOrder(order);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void MissingRequiredFields_ReturnsBadRequest()
+        {
+        // Arrange
+        var order = new Order { Id = 1, FirstName = "", LastName = null };
+        var controller = new OrdersController(new OrderRepository());
+
+        // Act
+        var result = controller.AddOrder(order);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void InvalidOrderId_ReturnsBadRequest()
+        {
+        // Arrange
+        var order = new Order { Id = -1, FirstName = "John", LastName = "Doe" };
+        var controller = new OrdersController(new OrderRepository());
+
+        // Act
+        var result = controller.AddOrder(order);
+
+        // Assert
+        Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void DuplicateOrder_ReturnsConflict()
+        {
+        // Arrange
+        var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
+        var controller = new OrdersController(new OrderRepository());
+
+        // Act
+        var result = controller.AddOrder(order);
+
+        // Assert
+        Assert.IsType<ConflictResult>(result);
+        }
+
+        [Fact]
+        public void UnauthorizedAccess_ReturnsUnauthorized()
+        {
+        // Arrange
+        var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
+        var controller = new OrdersController(new OrderRepository());
+
+        // Act
+        var result = controller.AddOrder(order);
+
+        // Assert
+        Assert.IsType<UnauthorizedResult>(result);
+        }
     }
 }
