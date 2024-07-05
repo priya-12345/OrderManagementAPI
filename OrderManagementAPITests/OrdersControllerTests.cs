@@ -80,74 +80,79 @@ namespace OrderManagementAPITests
             Assert.IsInstanceOf<OkResult>(result);
         }
 
-        [Fact]
+        [Test]
         public void InvalidOrderModel_ReturnsBadRequest()
         {
         // Arrange
-        var order = new Order { Id = 0, FirstName = null, LastName = null };
-        var controller = new OrdersController(new OrderRepository());
+            var order = new Order { Id = 0, FirstName = null, LastName = null };
+            var mockRepository = new Mock<IOrderRepository>();
+            var controller = new OrdersController(mockRepository.Object);
 
-        // Act
-        var result = controller.AddOrder(order);
+            // Act
+            var result = controller.AddOrder(order);
 
         // Assert
-        Assert.IsType<BadRequestResult>(result);
+        Assert.IsInstanceOf<BadRequestResult>(result);
         }
 
-        [Fact]
+        [Test]
         public void MissingRequiredFields_ReturnsBadRequest()
         {
         // Arrange
-        var order = new Order { Id = 1, FirstName = "", LastName = null };
-        var controller = new OrdersController(new OrderRepository());
+            var order = new Order { Id = 1, FirstName = "", LastName = null };
+            var mockRepository = new Mock<IOrderRepository>();
+            var controller = new OrdersController(mockRepository.Object);
 
-        // Act
-        var result = controller.AddOrder(order);
+            // Act
+            var result = controller.AddOrder(order);
 
         // Assert
-        Assert.IsType<BadRequestResult>(result);
+        Assert.IsInstanceOf<BadRequestResult>(result);
         }
 
-        [Fact]
+        [Test]
         public void InvalidOrderId_ReturnsBadRequest()
         {
         // Arrange
-        var order = new Order { Id = -1, FirstName = "John", LastName = "Doe" };
-        var controller = new OrdersController(new OrderRepository());
+            var order = new Order { Id = -1, FirstName = "John", LastName = "Doe" };
+            var mockRepository = new Mock<IOrderRepository>();
+            var controller = new OrdersController(mockRepository.Object);
 
-        // Act
-        var result = controller.AddOrder(order);
+            // Act
+            var result = controller.AddOrder(order);
 
         // Assert
-        Assert.IsType<BadRequestResult>(result);
+        Assert.IsInstanceOf<BadRequestResult>(result);
         }
 
-        [Fact]
+        [Test]
         public void DuplicateOrder_ReturnsConflict()
         {
         // Arrange
-        var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
-        var controller = new OrdersController(new OrderRepository());
+            var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
+            var mockRepository = new Mock<IOrderRepository>();
+            var controller = new OrdersController(mockRepository.Object);
 
-        // Act
-        var result = controller.AddOrder(order);
+            // Act
+            var result = controller.AddOrder(order);
 
         // Assert
-        Assert.IsType<ConflictResult>(result);
+        Assert.IsInstanceOf<ConflictResult>(result);
         }
 
-        [Fact]
+        [Test]
         public void UnauthorizedAccess_ReturnsUnauthorized()
         {
         // Arrange
-        var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
-        var controller = new OrdersController(new OrderRepository());
+            var order = new Order { Id = 1, FirstName = "John", LastName = "Doe" };
+            var mockRepository = new Mock<IOrderRepository>();
+            var controller = new OrdersController(mockRepository.Object);
 
-        // Act
-        var result = controller.AddOrder(order);
+            // Act
+            var result = controller.AddOrder(order);
 
         // Assert
-        Assert.IsType<UnauthorizedResult>(result);
+        Assert.IsInstanceOf<UnauthorizedResult>(result);
         }
     }
 }
