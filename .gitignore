@@ -1,0 +1,14 @@
+# Bin and Obj Folders
+bin/
+obj/
+
+# User-Specific Files
+*.user
+*.suo
+
+# Visual Studio Files
+.vs/
+*.csproj.user
+
+# NuGet Packages
+packages/
